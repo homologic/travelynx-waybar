@@ -44,7 +44,7 @@ if response["checkedIn"] :
             name = s["ds100"]
         else :
             name = s["name"]
-        arrtime = time.strftime("%H:%m", time.localtime(int(s["realTime"])))
+        arrtime = time.strftime("%H:%M", time.localtime(int(s["realTime"])))
         delay = (int(s["realTime"]) - int(s["scheduledTime"])) // 60
         s = f'{name} {arrtime}'
         if delay > 0 :
