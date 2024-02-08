@@ -55,7 +55,7 @@ def get_destination(response) :
         return s
     else:
         return None
-
+tooltip = ""
 checked_in = response["checkedIn"]
 if checked_in or args.last_checkin is not None :    
     s = get_destination(response)
@@ -64,8 +64,10 @@ if checked_in or args.last_checkin is not None :
         st = f'{s["prefname"]} {s["humantime"]}'
         if s["delay"] > 0 :
             st = st + " (+%d)" % s["delay"]
-
+    if "train" in response :
+        train = response["train"]
+        tooltip = f'{train["type"]} {train["line"]} ({train["no"]})'
             
 
         
-print(json.dumps({"text": st, "tooltip": "", "class": "active", "percentage": ""}))
+print(json.dumps({"text": st, "tooltip": tooltip, "class": "active", "percentage": ""}))
