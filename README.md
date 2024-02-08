@@ -2,8 +2,8 @@
 
 This script adds a very simple [travelynx](https://travelynx.de)
 integration into [waybar](https://github.com/Alexays/Waybar), showing
-DS100 (or if it doesn't exist, the name) of the station the user is
-checked into as well as the currently estimated arrival time. 
+the name of the station the user is traveling to as well as the
+currently estimated arrival time.
 
 ## Usage
 

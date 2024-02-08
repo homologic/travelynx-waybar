@@ -27,27 +27,45 @@ import sys
 import json
 import urllib.request
 import time
+import argparse
 
-token = sys.argv[1]
+parser = argparse.ArgumentParser(description='Travelynx Integration for waybar')
+parser.add_argument("token", help="travelynx status API token")
+parser.add_argument("-l", "--last-checkin", metavar="MINUTES", help="keep showing last checkin for a given amount of minutes, 0 for indefinitely", type=int,)
+parser.add_argument("-d", "--ds-100", action="store_true", help="Prefer DS100 codes for stations", default=False)
+args = parser.parse_args()
+
+token = args.token
 
 contents = urllib.request.urlopen("https://travelynx.de/api/v1/status/"+token).read()
 
 response = json.loads(contents)
-#print(response)
 
-s = ""
+st = ""
 
-if response["checkedIn"] :
+def get_destination(response) :
     if "toStation" in response :
         s = response["toStation"]
-        if "ds100" in s and s["ds100"] :
-            name = s["ds100"]
+        s["humantime"] = time.strftime("%H:%M", time.localtime(int(s["realTime"])))
+        s["delay"] = (int(s["realTime"]) - int(s["scheduledTime"])) // 60
+        if "ds100" in s and s["ds100"] and args.ds_100 :
+            s["prefname"] = s["ds100"]
         else :
-            name = s["name"]
-        arrtime = time.strftime("%H:%M", time.localtime(int(s["realTime"])))
-        delay = (int(s["realTime"]) - int(s["scheduledTime"])) // 60
-        s = f'{name} {arrtime}'
-        if delay > 0 :
-            s = s + " (+%d)" % delay
+            s["prefname"] = s["name"]
+        return s
+    else:
+        return None
+
+checked_in = response["checkedIn"]
+if checked_in or args.last_checkin is not None :    
+    s = get_destination(response)
+    elapsed = int(time.time()) - int(s["realTime"])
+    if checked_in or args.last_checkin == 0 or args.last_checkin * 60 > elapsed :
+        st = f'{s["prefname"]} {s["humantime"]}'
+        if s["delay"] > 0 :
+            st = st + " (+%d)" % s["delay"]
+
+            
+
         
-print(json.dumps({"text": s, "tooltip": "", "class": "active", "percentage": ""}))
+print(json.dumps({"text": st, "tooltip": "", "class": "active", "percentage": ""}))
