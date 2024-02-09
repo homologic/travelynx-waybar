@@ -66,7 +66,7 @@ if checked_in or args.last_checkin is not None :
             st = st + " (+%d)" % s["delay"]
     if "train" in response :
         train = response["train"]
-        tooltip = f'{train["type"]} {train["line"]} ({train["no"]})'
+        tooltip = f'{train["type"]} {train["line"]} ({train["no"]}) to {s["name"]}'
             
 
         
