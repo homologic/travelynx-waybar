@@ -35,6 +35,10 @@ Optionally, a css class can be set for the script:
 Note that this module is still very much WIP and new features may be
 added at any time.
 
+## See Also
+
+[Waybar-Traewelling](https://github.com/meyskens/waybar-traewelling),
+if you use Träwelling instead of Travelynx.
 
 ## Credits
 
