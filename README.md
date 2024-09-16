@@ -13,19 +13,19 @@ Add the following lines to your waybar config, replacing the path to
 the script and the travelynx token with the appropriate values, and
 registering the plugin at the desired position in the bar.
 
-
-	"custom/travelynx": {
-		"format": "{}",
-		"exec": "/path/to/script.py [travelynx_token]",
-		"interval": 20,
-		"return-type": "json",
-		"on-click": "x-www-browser https://travelynx.de",
-    },
-	
+```json
+"custom/travelynx": {
+	"format": "{}",
+	"exec": "/path/to/script.py [travelynx_token]",
+	"interval": 20,
+	"return-type": "json",
+	"on-click": "x-www-browser https://travelynx.de",
+},
+```
 	
 Optionally, a css class can be set for the script:
 
-```
+```css
 #custom-travelynx {
 	background-color: #000000;
 	padding: 0 5px;
