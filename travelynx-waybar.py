@@ -93,10 +93,13 @@ if checked_in or args.last_checkin is not None :
                 dep = timestring(stop, "Departure")
                 arr = timestring(stop, "Arrival")
                 tooltip = tooltip + f'\n{arr}–{dep} <b>{stop["name"]}</b>'
-            elif int(stop["scheduledDeparture"]) > now :
+            elif stop["scheduledDeparture"] is not None and  int(stop["scheduledDeparture"]) > now :
                 dep = humantime(stop["scheduledDeparture"])
                 arr = humantime(stop["scheduledArrival"])
                 tooltip = tooltip + f'\n<i>{arr}–{dep}</i>  <b>{stop["name"]}</b>'
+            elif stop["scheduledDeparture"] is None and  int(stop["scheduledArrival"]) > now :
+                arr = humantime(stop["scheduledArrival"])
+                tooltip = tooltip + f'\n<i>arrival {arr}</i>  <b>{stop["name"]}</b>'                
 
         
 print(json.dumps({"text": st, "tooltip": tooltip, "class": "active", "percentage": ""}))
