@@ -89,6 +89,8 @@ if checked_in or args.last_checkin is not None :
         stops = response["intermediateStops"]
         now = time.time()
         for stop in stops:
+            if stop["scheduledDeparture"] is None and stop["scheduledArrival"] is None :
+                continue
             if stop["realDeparture"] is not None and int(stop["realDeparture"]) > now :
                 dep = timestring(stop, "Departure")
                 arr = timestring(stop, "Arrival")
