@@ -37,7 +37,7 @@ args = parser.parse_args()
 
 token = args.token
 
-contents = urllib.request.urlopen("https://travelynx.de/api/v1/status/"+token).read()
+contents = urllib.request.urlopen("https://travelynx.de/api/v1/status/"+token, timeout=60).read()
 
 response = json.loads(contents)
 
@@ -47,10 +47,13 @@ def humantime(t) :
     return time.strftime("%H:%M", time.localtime(int(t)))
 
 def delay(s,i) :
-    return (int(s["real"+i]) - int(s["scheduled"+i])) // 60
+    if s["real"+i] is not None :
+        return (int(s["real"+i]) - int(s["scheduled"+i])) // 60
+    else :
+        return 0
 
 def timestring(s,i):
-    if not "real"+i in s :
+    if not "real"+i in s or s["real"+i] is None :
         return humantime(s["scheduled"+i])
     dl = delay(s,i)
     ht = humantime(s["real"+i])
